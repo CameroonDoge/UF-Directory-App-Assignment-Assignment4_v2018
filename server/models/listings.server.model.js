@@ -1,17 +1,34 @@
-//You can replace this entire file with your Bootcamp Assignment #3 - ListingSchema.js File
-
 /* Import mongoose and define any variables needed to create the schema */
 var mongoose = require('mongoose'), 
     Schema = mongoose.Schema;
 
-/* Create your schema */
+/* Create your schema for the data in the listings.json file that will define how data is saved in your database
+     See https://mongoosejs.com/docs/guide.html for examples for creating schemas
+     See also https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+  */
 var listingSchema = new Schema({
-  /* your code here from Bootcamp Assignment #3 - ListingSchema.js File*/
+  code: String,
+  name: String,
+  coordinates:{
+    latitude: Number,
+    longitude: Number
+  },
+  address: String
 });
 
-/* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
+/* Create a 'pre' function that adds the updated_at (and created_at if not already there) property 
+   See https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+*/
 listingSchema.pre('save', function(next) {
-  /* your code here from Bootcamp Assignment #3 - ListingSchema.js File */
+  var currentDate = new Date();
+  this.updated_at = currentDate;
+  if(!this.created_at)
+    this.created_at = currentDate;
+
+  if(this.name == null || this.code == null)
+    return resizeBy.json({success: false, message: 'Required field is missing.'});
+
+  next();
 });
 
 /* Use your schema to instantiate a Mongoose model */
